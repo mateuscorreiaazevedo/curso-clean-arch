@@ -4,7 +4,7 @@ import helmet from 'helmet'
 import cors from 'cors'
 
 // Routes 
-import taskRoutes from '@/routes/task-route'
+import { taskRoutes } from '@/routes/task-route'
 
 const PORT = 3333
 const app = express()
