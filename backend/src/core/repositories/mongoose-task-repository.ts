@@ -25,10 +25,19 @@ export class MongooseTaskRepository implements TaskGateway {
 
     return result
   }
+  
+  async findById(id: string): Promise<Task> {
+    const task = await TaskModel.findById(id).exec()
+
+    return new Task(
+      task?.description ?? '',
+      task?.done ?? false,
+      task?._id.toString()
+    )
+  }
 
   async toggle(task: Task): Promise<Task> {
-    const taskFound = await TaskModel.findById(task.id).exec()
-    const done = !taskFound?.done
+    const done = !task.done
 
     await TaskModel.updateOne(
       {
