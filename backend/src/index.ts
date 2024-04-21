@@ -4,7 +4,8 @@ import helmet from 'helmet'
 import cors from 'cors'
 
 // Routes 
-import { taskRoutes } from '@/routes/task-route'
+import { taskRoutes } from './routes/task-route'
+import { connect } from 'mongoose'
 
 const PORT = 3333
 const app = express()
@@ -17,5 +18,6 @@ app.use(json())
 app.use(taskRoutes)
 
 app.listen(PORT, async () => {
+  await connect('mongodb://localhost:27017/database')
   console.info(`Cleanest TODO API listening on ${PORT}`)
 })

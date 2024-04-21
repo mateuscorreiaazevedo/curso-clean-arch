@@ -1,4 +1,4 @@
-import { TaskGateway } from "@/core/gateways";
+import { TaskGateway } from "../../../gateways";
 import { ToogleTaskRequestDto } from "./toggle-task-dtos";
 
 export class ToggleTaskUseCase {

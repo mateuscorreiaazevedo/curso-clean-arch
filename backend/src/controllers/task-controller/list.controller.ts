@@ -1,5 +1,5 @@
-import { MongooseTaskRepository } from "@/core/repositories";
-import { ListTasksUseCase } from "@/core/usecases/task-usecases";
+import { MongooseTaskRepository } from "../../core/repositories";
+import { ListTasksUseCase } from "../../core/usecases/task-usecases";
 import { Request, Response } from "express";
 
 const taskRepository = new MongooseTaskRepository()

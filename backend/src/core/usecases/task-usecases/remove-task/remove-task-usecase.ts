@@ -1,4 +1,4 @@
-import { TaskGateway } from "@/core/gateways";
+import { TaskGateway } from "../../../gateways";
 import { RemoveTaskRequestDto } from "./remove-task-dtos";
 
 export class RemoveTaskUseCase {

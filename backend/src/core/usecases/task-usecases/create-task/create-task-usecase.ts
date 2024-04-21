@@ -1,6 +1,6 @@
-import { TaskGateway } from "@/core/gateways";
+import { TaskGateway } from "../../../gateways";
 import { CreateTaskRequestDto, CreateTaskResponseDto } from "./create-task-dtos";
-import { Task } from "@/core/entities";
+import { Task } from "../../../entities"
 
 export class CreateTaskUseCase {
   private TaskGate: TaskGateway

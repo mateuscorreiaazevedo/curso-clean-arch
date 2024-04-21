@@ -1,4 +1,4 @@
-import { TaskGateway } from "@/core/gateways";
+import { TaskGateway } from "../../../gateways";
 import { ListTasksResponseDto } from "./list-tasks-dtos";
 
 export class ListTasksUseCase {
