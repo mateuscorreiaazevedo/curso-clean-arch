@@ -24,7 +24,7 @@ export function CreateTask() {
         type="text"
         className="bg-zinc-700 flex-1 outline-none focus-visible:bg-zinc-800"
       />
-      <button type="submit" className="bg-teal-400 text-black">
+      <button type="submit" className="bg-teal-400 px-4 hover:bg-teal-500 text-black">
         <Check />
       </button>
     </form>

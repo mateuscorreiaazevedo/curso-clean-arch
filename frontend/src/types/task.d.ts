@@ -1,5 +1,5 @@
 interface TaskResponse {
-  _id: string
+  id: string
   description: string
   done: boolean
 }

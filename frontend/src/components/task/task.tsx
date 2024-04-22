@@ -5,7 +5,7 @@ import { toggle } from '@src/services/task'
 
 export function Task(props: TaskResponse) {
   const { setUpdatedList } = useUpdatedList()
-  const { description, done, _id: id } = props
+  const { description, done, id } = props
 
   const toggleTask = async () => {
     await toggle(id)
