@@ -5,7 +5,9 @@ import cors from 'cors'
 
 // Routes 
 import { taskRoutes } from './routes/task-route'
-import { connectDatabase } from './database/mongoose-client'
+
+// Database
+import { connect } from './database'
 
 const PORT = 3333
 const app = express()
@@ -18,6 +20,6 @@ app.use(json())
 app.use(taskRoutes)
 
 app.listen(PORT, async () => {
-  await connectDatabase()
+  await connect()
   console.info(`Cleanest TODO API listening on ${PORT}`)
 })
