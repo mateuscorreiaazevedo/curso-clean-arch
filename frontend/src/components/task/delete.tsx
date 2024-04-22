@@ -1,5 +1,5 @@
-import { useUpdatedList } from '@src/hooks/use-updated-list'
-import { remove } from '@src/services/task'
+import { useUpdatedList } from '@/hooks/use-updated-list'
+import { remove } from '@/services/task'
 import { XCircle } from 'lucide-react'
 
 type Props = {

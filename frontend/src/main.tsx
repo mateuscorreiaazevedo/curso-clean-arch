@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom/client'
-import '@src/assets/styles/globals.css'
+import '@/assets/styles/globals.css'
 import React from 'react'
 import { App } from './components'
 

@@ -1,4 +1,4 @@
-import { env } from '@src/config'
+import { env } from '@/config'
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
 
 type HttpRequest = {

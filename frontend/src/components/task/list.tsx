@@ -1,7 +1,7 @@
-import { get } from '@src/services/task'
+import { get } from '@/services/task'
 import { useEffect, useState } from 'react'
 import { Task } from './task'
-import { useUpdatedList } from '@src/hooks/use-updated-list'
+import { useUpdatedList } from '@/hooks/use-updated-list'
 import { CreateTask } from './create'
 
 export function TaskList() {

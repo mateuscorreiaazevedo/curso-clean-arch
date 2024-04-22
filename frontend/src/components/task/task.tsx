@@ -1,7 +1,7 @@
-import { useUpdatedList } from '@src/hooks/use-updated-list'
+import { useUpdatedList } from '@/hooks/use-updated-list'
 import { DeleteTask } from './delete'
 import { Check } from 'lucide-react'
-import { toggle } from '@src/services/task'
+import { toggle } from '@/services/task'
 
 export function Task(props: TaskResponse) {
   const { setUpdatedList } = useUpdatedList()

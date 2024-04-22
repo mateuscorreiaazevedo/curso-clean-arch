@@ -1,5 +1,5 @@
-import { useUpdatedList } from '@src/hooks/use-updated-list'
-import { create } from '@src/services/task'
+import { useUpdatedList } from '@/hooks/use-updated-list'
+import { create } from '@/services/task'
 import { Check } from 'lucide-react'
 import { FormEvent, useRef } from 'react'
 
