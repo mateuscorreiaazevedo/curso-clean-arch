@@ -27,7 +27,7 @@ export function TaskList() {
     <>
       <div className="p-4 flex flex-col gap-1">
         {tasks.map(task => (
-          <Task {...task} key={task.id} />
+          <Task {...task} key={task._id} />
         ))}
       </div>
       <CreateTask />

@@ -4,7 +4,8 @@ const http = new HttpService()
 
 export async function remove(id: string) {
   await http.request({
-    url: `/task/${id}`,
+    url: '/task',
+    data: { id },
     method: 'delete',
   })
 }

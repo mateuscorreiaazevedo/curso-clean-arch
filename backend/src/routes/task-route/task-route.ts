@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { create, list, remove, toggle } from '@/controllers/task-controller'
+import { create, list, remove, toggle } from '../../controllers/task-controller'
 
 const route = Router()
 
