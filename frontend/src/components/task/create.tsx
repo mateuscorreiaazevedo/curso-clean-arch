@@ -1,19 +1,23 @@
-import { useUpdatedList } from '@src/hooks/use-updated-list'
-import { create } from '@src/services/task'
+import { useUpdatedList } from '@/hooks/use-updated-list'
+import { useCasesTask } from '@/hooks/usecases-task'
 import { Check } from 'lucide-react'
 import { FormEvent, useRef } from 'react'
 
 export function CreateTask() {
-  const { setUpdatedList } = useUpdatedList()
   const inputRef = useRef<HTMLInputElement>(null)
+
+  const { createTaskUseCase } = useCasesTask()
+
+  const { setUpdatedList } = useUpdatedList()
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!inputRef.current) return
     const description = inputRef.current.value
-    await create(description)
+    await createTaskUseCase.execute({ description, done: false })
 
     inputRef.current.value = ''
+    inputRef.current.focus()
     setUpdatedList(true)
   }
 
@@ -22,9 +26,9 @@ export function CreateTask() {
       <input
         ref={inputRef}
         type="text"
-        className="bg-zinc-700 flex-1 outline-none focus-visible:bg-zinc-800"
+        className="bg-zinc-700 pl-4 flex-1 outline-none focus-visible:bg-zinc-800"
       />
-      <button type="submit" className="bg-teal-400 text-black">
+      <button type="submit" className="bg-teal-400 px-4 hover:bg-teal-500 text-black">
         <Check />
       </button>
     </form>

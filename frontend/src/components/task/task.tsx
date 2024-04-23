@@ -1,14 +1,16 @@
-import { useUpdatedList } from '@src/hooks/use-updated-list'
+import { useUpdatedList } from '@/hooks/use-updated-list'
 import { DeleteTask } from './delete'
 import { Check } from 'lucide-react'
-import { toggle } from '@src/services/task'
+import { useCasesTask } from '@/hooks/usecases-task'
+import { Task } from '@/core/domain/entities'
 
-export function Task(props: TaskResponse) {
+export function TaskItem(props: Task) {
   const { setUpdatedList } = useUpdatedList()
+  const { toggleTaskUseCase } = useCasesTask()
   const { description, done, id } = props
 
   const toggleTask = async () => {
-    await toggle(id)
+    await toggleTaskUseCase.execute({ id: id ?? '' })
     setUpdatedList(true)
   }
 
@@ -16,13 +18,13 @@ export function Task(props: TaskResponse) {
     <div className="flex flex-row items-center gap-x-2">
       <input
         type="checkbox"
-        id={id.toString()}
+        id={id}
         checked={done}
         onChange={toggleTask}
         className="sr-only"
       />
       <label
-        htmlFor={id.toString()}
+        htmlFor={id}
         data-done={done}
         className="size-5 flex items-center justify-center cursor-pointer border border-zinc-700 rounded data-[done=true]:bg-green-600"
       >
@@ -34,7 +36,7 @@ export function Task(props: TaskResponse) {
       >
         {description}
       </span>
-      <DeleteTask id={id} />
+      <DeleteTask id={id ?? ''} />
     </div>
   )
 }

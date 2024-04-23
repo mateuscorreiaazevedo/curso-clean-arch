@@ -1,20 +1,9 @@
-import { env } from '@src/config'
+import { env } from '@/config'
+import { HttpRequest, HttpResponse } from '@/core/domain/entities'
+import { HttpClientGateway } from '@/core/domain/gateways'
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
 
-type HttpRequest = {
-  data?: any
-  url: string
-  method?: 'get' | 'post' | 'patch' | 'delete'
-  headers?: any
-  params?: string
-}
-
-type HttpResponse<T = unknown> = {
-  statusCode: number
-  body: T
-}
-
-export class HttpService {
+export class AxiosHttpService implements HttpClientGateway {
   private axiosInstance: AxiosInstance
 
   constructor(private readonly BASE_URL = env.BASE_URL) {
@@ -24,7 +13,7 @@ export class HttpService {
   }
 
   async request<T = unknown>(props: HttpRequest): Promise<HttpResponse<T>> {
-    const { url, data, headers, method = 'get', params } = props
+    const { url, data, headers, method = 'get' } = props
     let axiosResponse: AxiosResponse
 
     try {
@@ -32,7 +21,6 @@ export class HttpService {
         url,
         data,
         headers,
-        params,
         method,
       })
     } catch (error) {
