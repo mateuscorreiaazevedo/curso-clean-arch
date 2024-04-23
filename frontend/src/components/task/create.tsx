@@ -14,6 +14,7 @@ export function CreateTask() {
     await create(description)
 
     inputRef.current.value = ''
+    inputRef.current.focus()
     setUpdatedList(true)
   }
 
@@ -22,7 +23,7 @@ export function CreateTask() {
       <input
         ref={inputRef}
         type="text"
-        className="bg-zinc-700 flex-1 outline-none focus-visible:bg-zinc-800"
+        className="bg-zinc-700 pl-4 flex-1 outline-none focus-visible:bg-zinc-800"
       />
       <button type="submit" className="bg-teal-400 px-4 hover:bg-teal-500 text-black">
         <Check />
