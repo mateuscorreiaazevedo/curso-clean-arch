@@ -1,9 +1,9 @@
-import { HttpClientResponseHandler } from '../../http/http-client-response-handler'
+import { BadRequestError, ServerError, UnexpectedError } from '@/core/domain/errors'
 import { ToggleTaskRequestDTO } from '../../dtos/task'
 import { TaskGateway } from '@/core/domain/gateways'
+import { HttpStatusCode } from '@/core/data/protocols'
 
 export class ToggleTaskUseCase {
-  private responseHandler = new HttpClientResponseHandler().execute
   private taskGateway: TaskGateway
 
   constructor(taskGate: TaskGateway) {
@@ -13,8 +13,17 @@ export class ToggleTaskUseCase {
   async execute(toggleTaskDto: ToggleTaskRequestDTO): Promise<void> {
     const { id } = toggleTaskDto
 
-    const response = await this.taskGateway.toggle(id)
+    const response = await this.taskGateway.remove(id)
 
-    this.responseHandler(response)
+    switch (response.statusCode) {
+      case HttpStatusCode.CREATED:
+        return
+      case HttpStatusCode.BAD_REQUEST:
+        throw new BadRequestError()
+      case HttpStatusCode.SERVER_ERROR:
+        throw new ServerError()
+      default:
+        throw new UnexpectedError()
+    }
   }
 }

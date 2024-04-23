@@ -21,10 +21,10 @@ export class HttpTaskService extends AxiosHttpService implements TaskGateway {
       method: 'get',
     })
 
-    return response.body
+    return response
   }
-  async toggle(id: string): Promise<void> {
-    await this.request({
+  async toggle(id: string): Promise<HttpResponse<void>> {
+    return await this.request<void>({
       url: '/task',
       method: 'patch',
       data: {
@@ -32,8 +32,8 @@ export class HttpTaskService extends AxiosHttpService implements TaskGateway {
       },
     })
   }
-  async remove(id: string): Promise<void> {
-    await this.request({
+  async remove(id: string): Promise<HttpResponse<void>> {
+    return await this.request<void>({
       url: '/task',
       method: 'delete',
       data: {

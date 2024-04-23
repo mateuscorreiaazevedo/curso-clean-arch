@@ -1,10 +1,10 @@
-import { HttpClientResponseHandler } from '../../http/http-client-response-handler'
 import { CreateTaskRequestDTO, CreateTaskResponseDTO } from '../../dtos/task'
 import { TaskGateway } from '@/core/domain/gateways'
 import { Task } from '@/core/domain/entities'
+import { HttpStatusCode } from '@/core/data/protocols'
+import { BadRequestError, ServerError, UnexpectedError } from '@/core/domain/errors'
 
 export class CreateTaskUseCase {
-  private responseHandler = new HttpClientResponseHandler().execute
   private taskGateway: TaskGateway
   constructor(taskGate: TaskGateway) {
     this.taskGateway = taskGate
@@ -16,12 +16,19 @@ export class CreateTaskUseCase {
     const task: Task = { description, done }
     const response = await this.taskGateway.create(task)
 
-    const createdTask = this.responseHandler<CreateTaskResponseDTO>(response)
-
-    return {
-      id: createdTask.id ?? '',
-      description,
-      done,
+    switch (response.statusCode) {
+      case HttpStatusCode.CREATED:
+        return {
+          id: response.body?.id ?? '',
+          description,
+          done,
+        }
+      case HttpStatusCode.BAD_REQUEST:
+        throw new BadRequestError()
+      case HttpStatusCode.SERVER_ERROR:
+        throw new ServerError()
+      default:
+        throw new UnexpectedError()
     }
   }
 }
