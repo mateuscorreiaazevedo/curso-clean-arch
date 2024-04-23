@@ -50,6 +50,7 @@ module.exports = {
         caughtErrorsIgnorePattern: '^_',
       },
     ],
+    'react-hooks/exhaustive-deps': 'off',
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },

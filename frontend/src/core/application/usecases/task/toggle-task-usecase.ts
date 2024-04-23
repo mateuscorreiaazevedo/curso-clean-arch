@@ -13,10 +13,10 @@ export class ToggleTaskUseCase {
   async execute(toggleTaskDto: ToggleTaskRequestDTO): Promise<void> {
     const { id } = toggleTaskDto
 
-    const response = await this.taskGateway.remove(id)
+    const response = await this.taskGateway.toggle(id)
 
     switch (response.statusCode) {
-      case HttpStatusCode.CREATED:
+      case HttpStatusCode.OK:
         return
       case HttpStatusCode.BAD_REQUEST:
         throw new BadRequestError()

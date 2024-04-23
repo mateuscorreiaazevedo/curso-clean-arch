@@ -1,17 +1,20 @@
 import { useUpdatedList } from '@/hooks/use-updated-list'
-import { create } from '@/services/task'
+import { useCasesTask } from '@/hooks/usecases-task'
 import { Check } from 'lucide-react'
 import { FormEvent, useRef } from 'react'
 
 export function CreateTask() {
-  const { setUpdatedList } = useUpdatedList()
   const inputRef = useRef<HTMLInputElement>(null)
+
+  const { createTaskUseCase } = useCasesTask()
+
+  const { setUpdatedList } = useUpdatedList()
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!inputRef.current) return
     const description = inputRef.current.value
-    await create(description)
+    await createTaskUseCase.execute({ description, done: false })
 
     inputRef.current.value = ''
     inputRef.current.focus()

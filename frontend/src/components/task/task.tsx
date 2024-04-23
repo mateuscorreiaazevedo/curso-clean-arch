@@ -1,14 +1,16 @@
 import { useUpdatedList } from '@/hooks/use-updated-list'
 import { DeleteTask } from './delete'
 import { Check } from 'lucide-react'
-import { toggle } from '@/services/task'
+import { useCasesTask } from '@/hooks/usecases-task'
+import { Task } from '@/core/domain/entities'
 
-export function Task(props: TaskResponse) {
+export function TaskItem(props: Task) {
   const { setUpdatedList } = useUpdatedList()
+  const { toggleTaskUseCase } = useCasesTask()
   const { description, done, id } = props
 
   const toggleTask = async () => {
-    await toggle(id)
+    await toggleTaskUseCase.execute({ id: id ?? '' })
     setUpdatedList(true)
   }
 
@@ -34,7 +36,7 @@ export function Task(props: TaskResponse) {
       >
         {description}
       </span>
-      <DeleteTask id={id} />
+      <DeleteTask id={id ?? ''} />
     </div>
   )
 }

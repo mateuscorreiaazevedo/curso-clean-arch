@@ -1,16 +1,19 @@
-import { get } from '@/services/task'
 import { useEffect, useState } from 'react'
-import { Task } from './task'
 import { useUpdatedList } from '@/hooks/use-updated-list'
+import { useCasesTask } from '@/hooks/usecases-task'
+import { Task } from '@/core/domain/entities'
 import { CreateTask } from './create'
+import { TaskItem } from './task'
 
 export function TaskList() {
-  const [tasks, setTasks] = useState<TaskResponse[]>([])
+  const [tasks, setTasks] = useState<Task[]>([])
   const { setUpdatedList, updatedList } = useUpdatedList()
+  const { listTaskUseCase } = useCasesTask()
 
-  async function getTasks() {
+  const getTasks = async () => {
+    setUpdatedList(true)
     try {
-      const response = await get()
+      const response = await listTaskUseCase.execute()
       setTasks(response)
     } catch (error) {
       setTasks([])
@@ -21,13 +24,13 @@ export function TaskList() {
   useEffect(() => {
     getTasks()
     setUpdatedList(false)
-  }, [setUpdatedList, updatedList])
+  }, [updatedList])
 
   return (
     <>
       <div className="p-4 flex flex-col gap-1">
         {tasks.map(task => (
-          <Task {...task} key={task.id} />
+          <TaskItem {...task} key={task?.id} />
         ))}
       </div>
       <CreateTask />

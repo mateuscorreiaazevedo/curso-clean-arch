@@ -3,7 +3,7 @@ import { HttpStatusCode } from '@/core/data/protocols'
 import { RemoveTaskRequestDTO } from '../../dtos/task'
 import { TaskGateway } from '@/core/domain/gateways'
 
-export class TaskUseCaseRemove {
+export class RemoveTaskUseCase {
   private taskGateway: TaskGateway
 
   constructor(taskGate: TaskGateway) {
@@ -16,7 +16,7 @@ export class TaskUseCaseRemove {
     const response = await this.taskGateway.remove(id)
 
     switch (response.statusCode) {
-      case HttpStatusCode.CREATED:
+      case HttpStatusCode.OK:
         return
       case HttpStatusCode.BAD_REQUEST:
         throw new BadRequestError()

@@ -2,7 +2,7 @@ import { AxiosHttpService } from '../../http/axios-http-service'
 import { Task, HttpResponse } from '../../../domain/entities'
 import { TaskGateway } from '../../../domain/gateways'
 
-export class HttpTaskService extends AxiosHttpService implements TaskGateway {
+export class HttpTaskRepository extends AxiosHttpService implements TaskGateway {
   async create(task: Task): Promise<HttpResponse<Task>> {
     const { description, done } = task
 
