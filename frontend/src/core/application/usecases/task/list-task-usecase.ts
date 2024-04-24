@@ -1,7 +1,7 @@
 import { ListTaskResponseDTO } from '../../dtos/task'
 import { TaskGateway } from '@/core/domain/gateways'
-import { httpClientResponseHandler } from '../../protocols/http'
 import { Task } from '@/core/domain/entities'
+import { httpClientResponseHandler } from '../../utils'
 
 export class ListTaskUseCase {
   private taskGateway: TaskGateway

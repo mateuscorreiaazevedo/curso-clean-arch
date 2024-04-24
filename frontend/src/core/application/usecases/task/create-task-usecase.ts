@@ -1,10 +1,11 @@
 import { CreateTaskRequestDTO, CreateTaskResponseDTO } from '../../dtos/task'
-import { httpClientResponseHandler } from '../../protocols/http'
+import { httpClientResponseHandler } from '../../utils'
 import { TaskGateway } from '@/core/domain/gateways'
 import { Task } from '@/core/domain/entities'
 
 export class CreateTaskUseCase {
   private taskGateway: TaskGateway
+
   constructor(taskGate: TaskGateway) {
     this.taskGateway = taskGate
   }

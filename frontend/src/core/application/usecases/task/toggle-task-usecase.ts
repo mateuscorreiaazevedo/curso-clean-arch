@@ -1,4 +1,4 @@
-import { httpClientResponseHandler } from '../../protocols/http'
+import { httpClientResponseHandler } from '../../utils'
 import { ToggleTaskRequestDTO } from '../../dtos/task'
 import { TaskGateway } from '@/core/domain/gateways'
 
