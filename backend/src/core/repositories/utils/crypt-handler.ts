@@ -8,6 +8,12 @@ class CryptHandler {
 
     return hashedValue
   }
+
+  async compare(value: string, hashed: string): Promise<boolean> {
+    const verifyValue = await bcrypt.compare(value, hashed)
+
+    return verifyValue
+  }
 }
 
 export const cryptHandler = new CryptHandler()
