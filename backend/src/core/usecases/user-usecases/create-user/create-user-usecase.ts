@@ -1,6 +1,6 @@
-import { User } from "@/core/entities";
+import { User } from "../../../entities";
 import { CreateUserRequestDTO, CreateUserResponseDTO } from "./create-user-dto";
-import { UserGateway } from "@/core/gateways";
+import { UserGateway } from "../../../gateways";
 
 export class CreateUserUseCase {
   private UserGate: UserGateway
@@ -14,14 +14,13 @@ export class CreateUserUseCase {
     const user = new User(name, email, password)
 
     if(password !== confirmPassword) {
-      throw new Error("Password is not equals");
+      throw new Error("Password is not equals.");
     }
 
-    const verifyUserExists = this.UserGate.findByEmail(email)
+    const verifyUserExists = await this.UserGate.findByEmail(email)
 
     if(verifyUserExists) {
       throw new Error("User already registered");
-      
     }
     
     const response = await this.UserGate.create(user)

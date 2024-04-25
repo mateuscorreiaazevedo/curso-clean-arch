@@ -5,7 +5,7 @@ export class User {
   private Password: string
 
   constructor(name: string, email: string, password: string, id?: string) {
-    if (!this.isIdValid(id)) {
+    if (id && !this.isIdValid(id)) {
       throw new Error("INVALID_USER_ID");
     }
     if (!this.isNameValid(name)) {
@@ -57,6 +57,6 @@ export class User {
   private isPasswordValid(password: string): boolean {
     const passwordRegex = /^(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/
     
-    return typeof password === 'string' && passwordRegex.test(password) && password.length > 8
+    return typeof password === 'string' && passwordRegex.test(password) && password.length >= 8
   }
 }

@@ -5,6 +5,7 @@ import cors from 'cors'
 
 // Routes 
 import { taskRoutes } from './routes/task-route'
+import { userRoutes } from './routes/user-route'
 
 // Database
 import { connect } from './database'
@@ -18,6 +19,7 @@ app.use(json())
 
 // Use routes
 app.use(taskRoutes)
+app.use(userRoutes)
 
 app.listen(PORT, async () => {
   await connect()

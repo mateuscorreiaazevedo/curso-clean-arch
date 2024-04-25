@@ -19,14 +19,18 @@ export class MongooseUserRepository implements UserGateway {
     )
   }
 
-  async findByEmail(email: string): Promise<User> {
-    const userExistent = await UserModel.findOne({ email })
+  async findByEmail(email: string): Promise<User | false> {
+    const userExistent = await UserModel.findOne({ email }).exec()
 
+    if(!userExistent) {
+      return false
+    }
+    
     return new User(
-      userExistent.name,
-      userExistent.email,
-      userExistent.password,
-      userExistent._id.toString()
+      userExistent?.name,
+      userExistent?.email,
+      userExistent?.password,
+      userExistent?._id.toString()
     )
   }
 }
