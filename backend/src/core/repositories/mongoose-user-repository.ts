@@ -38,6 +38,10 @@ export class MongooseUserRepository implements UserGateway {
   async login(email: string, password: string): Promise<Authentication | null> {
     const userFinded = await this.findByEmail(email)
       
+    if(!userFinded) {
+      return null
+    }
+    
     const verifyPassword = await cryptHandler.compare(password, userFinded.password)
       
     if(!verifyPassword) {
