@@ -9,8 +9,9 @@ import { userRoutes } from './routes/user-route'
 
 // Database
 import { connect } from './database'
+import { env } from './config'
 
-const PORT = 3333
+const PORT = env.port
 const app = express()
 
 app.use(helmet())

@@ -1,7 +1,8 @@
 import { UserGateway } from "../gateways";
-import { User } from "../entities";
+import { Authentication, User } from "../entities";
 import { UserModel } from "./models/user-model";
 import { cryptHandler } from "./utils/crypt-handler";
+import { jwtHandler } from "./utils/jwt-handler";
 
 export class MongooseUserRepository implements UserGateway {
   async create(user: User): Promise<User> {
@@ -19,18 +20,36 @@ export class MongooseUserRepository implements UserGateway {
     )
   }
 
-  async findByEmail(email: string): Promise<User | false> {
-    const userExistent = await UserModel.findOne({ email }).exec()
+  async findByEmail(email: string): Promise<User | null> {
+    const userFinded = await UserModel.findOne({ email }).exec()
 
-    if(!userExistent) {
-      return false
+    if(!userFinded) {
+      return null
     }
     
     return new User(
-      userExistent?.name,
-      userExistent?.email,
-      userExistent?.password,
-      userExistent?._id.toString()
+      userFinded?.name,
+      userFinded?.email,
+      userFinded?.password,
+      userFinded?._id.toString()
     )
+  }
+
+  async login(email: string, password: string): Promise<Authentication | null> {
+      const userFinded = await this.findByEmail(email)
+      
+      if(!userFinded) {
+        return null
+      }
+      
+      const verifyPassword = await cryptHandler.compare(password, userFinded.password)
+      
+      if(!verifyPassword) {
+        return null
+      }
+
+      const token = jwtHandler.encrypt({ id: userFinded.id })
+
+      return new Authentication(token)
   }
 }
