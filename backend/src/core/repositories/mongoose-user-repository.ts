@@ -36,20 +36,31 @@ export class MongooseUserRepository implements UserGateway {
   }
 
   async login(email: string, password: string): Promise<Authentication | null> {
-      const userFinded = await this.findByEmail(email)
+    const userFinded = await this.findByEmail(email)
       
-      if(!userFinded) {
-        return null
-      }
+    const verifyPassword = await cryptHandler.compare(password, userFinded.password)
       
-      const verifyPassword = await cryptHandler.compare(password, userFinded.password)
-      
-      if(!verifyPassword) {
-        return null
-      }
+    if(!verifyPassword) {
+      return null
+    }
 
-      const token = jwtHandler.encrypt({ id: userFinded.id })
+    const token = jwtHandler.encrypt({ id: userFinded.id })
 
-      return new Authentication(token)
+    return new Authentication(token)
+  }
+
+  async getMe(token: string): Promise<User> {
+    const tokenFormatted = token.split(' ')[1]
+    
+    const { id } = jwtHandler.decrypt(tokenFormatted)
+
+    const user = await UserModel.findById(id)
+    
+    return new User(
+      user.name,
+      user.email,
+      user.password,
+      id
+    )
   }
 }
