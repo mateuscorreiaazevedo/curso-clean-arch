@@ -1,5 +1,5 @@
+import { useTaskAdapter } from '@/hooks/use-task-adapter'
 import { useUpdatedList } from '@/hooks/use-updated-list'
-import { useCasesTask } from '@/hooks/usecases-task'
 import { XCircle } from 'lucide-react'
 
 type Props = {
@@ -7,7 +7,7 @@ type Props = {
 }
 
 export function DeleteTask({ id }: Props) {
-  const { removeTaskUseCase } = useCasesTask()
+  const { removeTaskUseCase } = useTaskAdapter()
   const { setUpdatedList } = useUpdatedList()
 
   async function deleteTask() {

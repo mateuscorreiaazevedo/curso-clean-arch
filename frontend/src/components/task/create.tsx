@@ -1,13 +1,11 @@
+import { useTaskAdapter } from '@/hooks/use-task-adapter'
 import { useUpdatedList } from '@/hooks/use-updated-list'
-import { useCasesTask } from '@/hooks/usecases-task'
-import { Check } from 'lucide-react'
 import { FormEvent, useRef } from 'react'
+import { Check } from 'lucide-react'
 
 export function CreateTask() {
   const inputRef = useRef<HTMLInputElement>(null)
-
-  const { createTaskUseCase } = useCasesTask()
-
+  const { createTaskUseCase } = useTaskAdapter()
   const { setUpdatedList } = useUpdatedList()
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {

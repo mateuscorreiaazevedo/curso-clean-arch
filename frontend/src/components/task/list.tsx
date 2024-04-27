@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useTaskAdapter } from '@/hooks/use-task-adapter'
 import { useUpdatedList } from '@/hooks/use-updated-list'
-import { useCasesTask } from '@/hooks/usecases-task'
 import { Task } from '@/core/domain/entities'
+import { useEffect, useState } from 'react'
 import { CreateTask } from './create'
 import { TaskItem } from './task'
 
 export function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([])
   const { setUpdatedList, updatedList } = useUpdatedList()
-  const { listTaskUseCase } = useCasesTask()
+  const { listTaskUseCase } = useTaskAdapter()
 
   const getTasks = async () => {
     setUpdatedList(true)
