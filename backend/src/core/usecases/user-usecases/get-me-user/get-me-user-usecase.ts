@@ -11,6 +11,11 @@ export class GetMeUserUseCase {
 
   async execute(getMeUser: GetMeUserRequestDTO): Promise<GetMeUserResponseDTO> {
     const { token } = getMeUser
+
+    if (!token) {
+      throw new Error('Unauthorized')
+    }
+    
     const tokenValue = token.split(' ')[1]
     
     const validateToken = new Authentication(tokenValue)

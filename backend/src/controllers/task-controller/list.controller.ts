@@ -1,14 +1,13 @@
-import { MongooseTaskRepository } from "../../core/repositories";
-import { ListTasksUseCase } from "../../core/usecases/task-usecases";
 import { Request, Response } from "express";
+import { userAdapter } from "../../adapters/user.adapter";
+import { taskAdapter } from "../../adapters/task.adapter";
 
-const taskRepository = new MongooseTaskRepository()
-const listTasksUseCase = new ListTasksUseCase(taskRepository)
-
-export const list = async (_req: Request, res: Response) => {
+export const list = async (req: Request, res: Response) => {
   try {
-    const tasks = await listTasksUseCase.execute()
+    const { authorization: token } = req.headers
 
+    const user = await userAdapter.getMeUserUseCase.execute({ token })
+    const tasks = await taskAdapter.listTasksUseCase.execute({ userId: user.id })
 
     res.status(200).send({ tasks })
   } catch (error) {

@@ -4,21 +4,22 @@ import { TaskModel } from "./models/task-model";
 
 export class MongooseTaskRepository implements TaskGateway {
   async create(task: Task): Promise<Task> {
-    const { description, done } = task
+    const { description, done, userId } = task
 
-   const result = await TaskModel.create({ description, done })
+   const result = await TaskModel.create({ description, done, userId })
 
-   return new Task(description, done, result._id.toString() )
+   return new Task(description, done, userId, result._id.toString() )
   }
 
-  async list(): Promise<Task[]> {
+  async list(userId: string): Promise<Task[]> {
     const result: Task[] = []
-    const tasks = await TaskModel.find()
+    const tasks = await TaskModel.find({ userId })
 
     tasks.forEach(task => {
       result.push(new Task(
         task.description,
         task.done,
+        task.userId,
         task._id.toString()
       ))
     })
@@ -32,7 +33,8 @@ export class MongooseTaskRepository implements TaskGateway {
     return new Task(
       task?.description ?? '',
       task?.done ?? false,
-      task?._id.toString()
+      task?.userId ?? '',
+      task?._id.toString() ?? ''
     )
   }
 
@@ -48,7 +50,7 @@ export class MongooseTaskRepository implements TaskGateway {
       }
     )    
 
-    return new Task(task.description, done, task.id)
+    return new Task(task.description, done, task.userId, task.id)
   }
 
   async remove(task: Task): Promise<void> {

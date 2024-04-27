@@ -9,8 +9,13 @@ export class ToggleTaskUseCase {
   }
 
   async execute(toggleTaskDto: ToogleTaskRequestDto): Promise<void> {
-    const { id } = toggleTaskDto
+    const { id, userId } = toggleTaskDto
     const task = await this.TaskGate.findById(id)
+
+    if(task.userId !== userId) {
+      throw new Error("Unauthorized request");
+      
+    }
 
     await this.TaskGate.toggle(task)
   }

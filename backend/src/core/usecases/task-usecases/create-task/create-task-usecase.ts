@@ -10,8 +10,8 @@ export class CreateTaskUseCase {
   }
 
   async execute(createTaskDto: CreateTaskRequestDto): Promise<CreateTaskResponseDto> {
-    const {description, done } = createTaskDto
-    const task = new Task(description, done)
+    const {description, done, userId } = createTaskDto
+    const task = new Task(description, done, userId)
     
     const result = await this.TaskGate.create(task)
     const { id } = result
@@ -19,6 +19,7 @@ export class CreateTaskUseCase {
     return {
       id: id ?? '',
       description,
+      userId,
       done
     }
   }

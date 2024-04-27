@@ -1,15 +1,15 @@
-import { ToggleTaskUseCase } from "../../core/usecases/task-usecases";
-import { MongooseTaskRepository } from "../../core/repositories";
+import { userAdapter } from "../../adapters/user.adapter";
+import { taskAdapter } from "../../adapters/task.adapter";
 import { Request, Response } from "express";
 
-const taskRepository = new MongooseTaskRepository()
-const toggleTaskUseCase = new ToggleTaskUseCase(taskRepository)
 
 export const toggle = async (req: Request, res: Response) => {
   try {
     const { id } = req.body
+    const { authorization: token } = req.headers
 
-    await toggleTaskUseCase.execute({ id })
+    const user = await userAdapter.getMeUserUseCase.execute({ token })
+    await taskAdapter.toggleTaskUseCase.execute({ id, userId: user.id })
 
     res.status(200).send({ updated: true })
 

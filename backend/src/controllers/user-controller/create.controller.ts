@@ -1,15 +1,17 @@
 import { Request, Response } from "express";
-import { MongooseUserRepository } from "../../core/repositories";
-import { CreateUserUseCase } from "../../core/usecases/user-usecases";
+import { userAdapter } from "../../adapters/user.adapter";
 
-const userRepository = new MongooseUserRepository()
-const createUserUseCase = new CreateUserUseCase(userRepository)
 
 export const create = async (req: Request, res: Response) => {
   try {
     const { email, name, password, confirmPassword } = req.body
 
-    const user = await createUserUseCase.execute({ confirmPassword, email, name, password })
+    const user = await userAdapter.createUserUseCase.execute({
+      confirmPassword,
+      email,
+      name,
+      password
+    })
     
     res.status(201).send({ id: user.id, name, email })
   } catch (error) {
