@@ -14,7 +14,7 @@ export const create = async (req: Request, res: Response) => {
       userId: user.id
     })
 
-    res.status(201).send({ id: task.id, description, done })
+    res.status(201).send(task)
   } catch (error) {
     res.status(400).send({ error: error.message })
   }
