@@ -11,7 +11,7 @@ export class CreateUserUseCase {
 
   async execute(createUserDto: CreateUserRequestDTO): Promise<CreateUserResponseDTO> {
     const { confirmPassword, email, name, password } = createUserDto
-    const user = new User(name, email, password)
+    const user = new User(email, password, name)
 
     if(password !== confirmPassword) {
       throw new Error("Password is not equals.");

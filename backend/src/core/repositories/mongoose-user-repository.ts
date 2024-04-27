@@ -13,9 +13,9 @@ export class MongooseUserRepository implements UserGateway {
     const newUser = await UserModel.create({ email, name, password: passwordHashed })
     
     return new User(
-      name,
       email,
       passwordHashed,
+      name,
       newUser._id.toString()
     )
   }
@@ -28,14 +28,16 @@ export class MongooseUserRepository implements UserGateway {
     }
     
     return new User(
-      userFinded?.name,
       userFinded?.email,
       userFinded?.password,
+      userFinded?.name,
       userFinded?._id.toString()
     )
   }
 
-  async login(email: string, password: string): Promise<Authentication | null> {
+  async login(user: User): Promise<Authentication | null> {
+    const { email, password } = user    
+    
     const userFinded = await this.findByEmail(email)
       
     if(!userFinded) {
@@ -54,16 +56,18 @@ export class MongooseUserRepository implements UserGateway {
   }
 
   async getMe(token: string): Promise<User> {
-    const tokenFormatted = token.split(' ')[1]
-    
-    const { id } = jwtHandler.decrypt(tokenFormatted)
+    const { id } = jwtHandler.decrypt(token)
 
     const user = await UserModel.findById(id)
     
+    if(!user) {
+      return null
+    }
+    
     return new User(
-      user.name,
       user.email,
       user.password,
+      user.name,
       id
     )
   }

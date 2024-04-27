@@ -4,11 +4,11 @@ export class User {
   private Email: string
   private Password: string
 
-  constructor(name: string, email: string, password: string, id?: string) {
+  constructor(email: string, password: string, name?: string, id?: string) {
     if (id && !this.isIdValid(id)) {
       throw new Error("INVALID_USER_ID");
     }
-    if (!this.isNameValid(name)) {
+    if (name && !this.isNameValid(name)) {
       throw new Error("INVALID_USER_NAME");
     }
     if (!this.isEmailValid(email)) {
