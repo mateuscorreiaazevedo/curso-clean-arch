@@ -7,7 +7,7 @@ export async function getMe(req: Request, res: Response) {
     
     const me = await userAdapter.getMeUserUseCase.execute({ token: authorization })
     
-    res.status(200).send({ me })
+    res.status(200).send(me)
     
   } catch (error) {
     res.status(400).send({ error: error.message })

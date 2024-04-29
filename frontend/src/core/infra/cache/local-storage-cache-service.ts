@@ -9,7 +9,11 @@ export class LocalStorageCacheService implements CacheGateway {
     return response as T
   }
 
-  set(key: string, value: object): void {
+  set(key: string, value: object | string): void {
     localStorage.setItem(key, JSON.stringify(value))
+  }
+
+  remove(key: string): void {
+    localStorage.removeItem(key)
   }
 }

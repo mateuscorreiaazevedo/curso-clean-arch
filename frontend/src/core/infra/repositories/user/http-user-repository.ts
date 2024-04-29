@@ -33,7 +33,7 @@ export class HttpUserRepository extends AxiosHttpService implements UserGateway 
         password,
       },
     })
-    cacheSevice.set('token', { ...response })
+    cacheSevice.set('token', response.body?.token as string)
 
     return response
   }
@@ -50,5 +50,9 @@ export class HttpUserRepository extends AxiosHttpService implements UserGateway 
     })
 
     return response
+  }
+
+  signOut(): void {
+    cacheSevice.remove('token')
   }
 }

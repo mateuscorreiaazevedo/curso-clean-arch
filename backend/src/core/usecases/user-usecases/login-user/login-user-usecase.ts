@@ -13,12 +13,14 @@ export class LoginUserUseCase {
     const { email, password } = loginUserDto
     const user = new User(email, password)
     
-    const credentials = await this.userGateway.login(user)
+    const { token } = await this.userGateway.login(user)
 
-    if(!credentials) {
+    if(!token) {
       throw new Error("Invalid credentials");
     }
 
-    return credentials
+    return {
+      token
+    }
   }
 }
