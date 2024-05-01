@@ -1,13 +1,16 @@
 import ReactDOM from 'react-dom/client'
 import '@/assets/styles/globals.css'
 import React from 'react'
-import { App } from './components'
-import { TaskUseCaseProvider } from './contexts/task/task-provider'
+import RouterApp from './routes/router'
+import { BrowserRouter } from 'react-router-dom'
+import { AuthProvider } from './contexts/auth-context'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <TaskUseCaseProvider>
-      <App />
-    </TaskUseCaseProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <RouterApp />
+      </AuthProvider>
+    </BrowserRouter>
   </React.StrictMode>
 )

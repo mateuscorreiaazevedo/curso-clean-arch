@@ -1,12 +1,12 @@
+import { useTaskAdapter } from '@/hooks/use-task-adapter'
 import { useUpdatedList } from '@/hooks/use-updated-list'
+import { Task } from '@/core/domain/entities'
 import { DeleteTask } from './delete'
 import { Check } from 'lucide-react'
-import { useCasesTask } from '@/hooks/usecases-task'
-import { Task } from '@/core/domain/entities'
 
 export function TaskItem(props: Task) {
   const { setUpdatedList } = useUpdatedList()
-  const { toggleTaskUseCase } = useCasesTask()
+  const { toggleTaskUseCase } = useTaskAdapter()
   const { description, done, id } = props
 
   const toggleTask = async () => {

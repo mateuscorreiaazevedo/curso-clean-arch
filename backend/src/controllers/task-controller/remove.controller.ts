@@ -1,16 +1,16 @@
-import { MongooseTaskRepository } from "../../core/repositories";
-import { RemoveTaskUseCase } from "../../core/usecases/task-usecases";
 import { Request, Response } from "express";
+import { userAdapter } from "../../adapters/user.adapter";
+import { taskAdapter } from "../../adapters/task.adapter";
 
-const taskRepository = new MongooseTaskRepository()
-const removeTaskUseCase = new RemoveTaskUseCase(taskRepository)
 
 export const remove = async (req: Request, res: Response) => {
   try {
     const { id } = req.body
+    const { authorization } = req.headers
+    
+    const user = await userAdapter.getMeUserUseCase.execute({ token: authorization })
 
-
-    await removeTaskUseCase.execute({ id })
+    await taskAdapter.removeTaskUseCase.execute({ id, userId: user.id })
 
     res.status(200).send({ deleted: true })
 

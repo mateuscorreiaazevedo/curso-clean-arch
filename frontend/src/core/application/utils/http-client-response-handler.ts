@@ -1,6 +1,5 @@
 import { BadRequestError, ServerError, UnexpectedError } from '@/core/domain/errors'
-import { HttpResponse } from '@/core/domain/entities'
-import { HttpStatusCode } from '../protocols/http'
+import { HttpResponse, HttpStatusCode } from '@/core/infra/http'
 
 export function httpClientResponseHandler<T = unknown>(response: HttpResponse<T>): T {
   switch (response.statusCode) {

@@ -2,20 +2,26 @@ export class Task {
   private Id: string
   private Description: string
   private Done: boolean
+  private UserId: string
   
-  constructor(description: string, done: boolean, id?: string) {
+  constructor(description: string, done: boolean, userId: string, id?: string) {
     if (!this.isDescritionValid(description)) {
       throw new Error("INVALID_TASK_DESCRIPTION");
     }
-    if(!this.isDoneValid(done)) {
+    if (!this.isDoneValid(done)) {
       throw new Error("INVALID_TASK_DONE");
     }
-    if(id && !this.isIdValid(id)) {
+    if (!this.isUserIdValid(userId)) {
+      throw new Error("INVALID_TASK_USERID");
+      
+    }
+    if (id && !this.isIdValid(id)) {
       throw new Error("INVALID_TASK_ID");
     }
 
     this.Description = description
     this.Done = done
+    this.UserId = userId
     this.Id = id
   }
 
@@ -26,12 +32,19 @@ export class Task {
     return this.Done
   }
 
+  get userId() {
+    return this.UserId
+  }
+
   get id() {
     return this.Id
   }
 
   private isIdValid (id: string) {
     return typeof id === 'string'
+  }
+  private isUserIdValid (userId: string) {
+    return typeof userId === 'string'
   }
   
   private isDescritionValid (description: string): boolean {

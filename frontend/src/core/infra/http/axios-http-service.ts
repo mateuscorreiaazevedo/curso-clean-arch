@@ -1,9 +1,8 @@
 import { env } from '@/config'
-import { HttpRequest, HttpResponse } from '@/core/domain/entities'
-import { HttpClientGateway } from '@/core/domain/gateways'
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
+import { HttpClient, HttpRequest, HttpResponse } from './http-protocols'
 
-export class AxiosHttpService implements HttpClientGateway {
+export class AxiosHttpService implements HttpClient {
   private axiosInstance: AxiosInstance
 
   constructor(private readonly BASE_URL = env.BASE_URL) {

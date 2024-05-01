@@ -1,21 +1,23 @@
-import { TaskGateway } from "../../../gateways";
-import { ListTasksResponseDto } from "./list-tasks-dtos";
+import { ListTaskRequestDTO, ListTasksResponseDto } from "./list-tasks-dtos";
+import { TaskRepository } from "../../../repositories";
 
 export class ListTasksUseCase {
-  private TaskGate: TaskGateway
+  private TaskGate: TaskRepository
   
-  constructor(taskGate: TaskGateway) {
+  constructor(taskGate: TaskRepository) {
     this.TaskGate = taskGate
   }
 
-  async execute(): Promise<ListTasksResponseDto[]> {
+  async execute(listTaskDto: ListTaskRequestDTO): Promise<ListTasksResponseDto[]> {
+    const { userId } = listTaskDto
     const result: ListTasksResponseDto[] = []
-    const tasks = await this.TaskGate.list()
+    const tasks = await this.TaskGate.list(userId)
 
     tasks.forEach(task => {
       result.push({
         description: task.description,
         done: task.done,
+        userId,
         id: task.id ?? ''
       })
     })

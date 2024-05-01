@@ -5,11 +5,13 @@ import cors from 'cors'
 
 // Routes 
 import { taskRoutes } from './routes/task-route'
+import { userRoutes } from './routes/user-route'
 
 // Database
 import { connect } from './database'
+import { env } from './config'
 
-const PORT = 3333
+const PORT = env.port
 const app = express()
 
 app.use(helmet())
@@ -18,6 +20,7 @@ app.use(json())
 
 // Use routes
 app.use(taskRoutes)
+app.use(userRoutes)
 
 app.listen(PORT, async () => {
   await connect()
