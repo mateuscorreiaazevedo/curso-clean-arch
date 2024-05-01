@@ -1,11 +1,11 @@
+import { TaskRepository } from '@/core/infra/repositories'
 import { httpClientResponseHandler } from '../../utils'
 import { RemoveTaskRequestDTO } from '../../dtos/task'
-import { TaskGateway } from '@/core/domain/gateways'
 
 export class RemoveTaskUseCase {
-  private taskGateway: TaskGateway
+  private taskGateway: TaskRepository
 
-  constructor(taskGate: TaskGateway) {
+  constructor(taskGate: TaskRepository) {
     this.taskGateway = taskGate
   }
 

@@ -1,10 +1,10 @@
-import { TaskGateway } from "../../../gateways";
 import { RemoveTaskRequestDto } from "./remove-task-dtos";
+import { TaskRepository } from "../../../repositories";
 
 export class RemoveTaskUseCase {
-  private TaskGate: TaskGateway
+  private TaskGate: TaskRepository
   
-  constructor(taskGate: TaskGateway) {
+  constructor(taskGate: TaskRepository) {
     this.TaskGate = taskGate
   }
 

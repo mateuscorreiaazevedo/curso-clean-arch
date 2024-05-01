@@ -2,6 +2,7 @@ import { useCustomForm } from '@/hooks/use-custom-form'
 import { Form } from '../commons/form'
 import * as y from 'yup'
 import { useAuthAdapter } from '@/hooks/use-auth-adapter'
+import { useTokenLocalStorage } from '@/hooks/use-token-local-storage'
 
 const loginSchema = y.object({
   email: y
@@ -18,6 +19,7 @@ type Schema = y.InferType<typeof loginSchema>
 
 export function LoginForm() {
   const { loginUserUseCase } = useAuthAdapter()
+  const cacheStorage = useTokenLocalStorage()
 
   const form = useCustomForm<Schema>({
     schema: loginSchema,
@@ -25,10 +27,12 @@ export function LoginForm() {
 
   const onSubmit = async (data: Schema) => {
     try {
-      await loginUserUseCase.execute(data)
+      const { token } = await loginUserUseCase.execute(data)
+      cacheStorage.set(token)
       window.location.reload()
     } catch (error) {
-      form.setError('root', (error as any).error)
+      const { message } = error as Error
+      form.setError('root', { message })
     }
   }
 

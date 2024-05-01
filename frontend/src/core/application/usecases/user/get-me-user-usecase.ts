@@ -1,11 +1,11 @@
-import { UserGateway } from '@/core/domain/gateways'
+import { UserRepository } from '@/core/infra/repositories'
 import { httpClientResponseHandler } from '../../utils'
 import { GetMeUserResponseDTO } from '../../dtos/user'
 
 export class GetMeUserUseCase {
-  private userGateway: UserGateway
+  private userGateway: UserRepository
 
-  constructor(userGate: UserGateway) {
+  constructor(userGate: UserRepository) {
     this.userGateway = userGate
   }
 

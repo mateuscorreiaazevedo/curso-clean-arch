@@ -11,7 +11,7 @@ export function useCustomForm<T extends FieldValues>(props: CustomForms<T>) {
 
   const methods = useForm<T | any>({
     resolver: yupResolver(schema),
-    mode: 'onBlur',
+    mode: 'onSubmit',
     ...rest,
   })
 

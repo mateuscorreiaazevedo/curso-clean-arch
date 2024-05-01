@@ -1,11 +1,12 @@
-import { UserGateway } from '@/core/domain/gateways'
 import { AxiosHttpService } from '../../http/axios-http-service'
-import { User, HttpResponse, Authentication } from '@/core/domain/entities'
-import { LocalStorageCacheService } from '../../cache/local-storage-cache-service'
+import { User, Authentication } from '@/core/domain/entities'
+import { LocalStorageCacheService } from '../../cache'
+import { UserRepository } from './user-repository'
+import { HttpResponse } from '../../http'
 
 const cacheSevice = new LocalStorageCacheService()
 
-export class HttpUserRepository extends AxiosHttpService implements UserGateway {
+export class HttpUserRepository extends AxiosHttpService implements UserRepository {
   async create(user: User): Promise<HttpResponse<User>> {
     const { email, name, password } = user
 
@@ -33,7 +34,6 @@ export class HttpUserRepository extends AxiosHttpService implements UserGateway 
         password,
       },
     })
-    cacheSevice.set('token', response.body?.token as string)
 
     return response
   }

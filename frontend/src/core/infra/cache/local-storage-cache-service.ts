@@ -1,6 +1,6 @@
-import { CacheGateway } from '@/core/domain/gateways'
+import { Cache } from './cache-protocols'
 
-export class LocalStorageCacheService implements CacheGateway {
+export class LocalStorageCacheService implements Cache {
   get<T = unknown>(key: string): T {
     const cacheData = localStorage.getItem(key)
 

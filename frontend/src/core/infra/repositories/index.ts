@@ -1,2 +1,2 @@
-export * from './user/http-user-repository'
-export * from './task/http-task-repository'
+export * from './user'
+export * from './task'

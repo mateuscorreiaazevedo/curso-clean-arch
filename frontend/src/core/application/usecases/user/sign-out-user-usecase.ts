@@ -1,9 +1,9 @@
-import { UserGateway } from '@/core/domain/gateways'
+import { UserRepository } from '@/core/infra/repositories'
 
 export class SignOutUserUseCase {
-  private userGateway: UserGateway
+  private userGateway: UserRepository
 
-  constructor(userGate: UserGateway) {
+  constructor(userGate: UserRepository) {
     this.userGateway = userGate
   }
 

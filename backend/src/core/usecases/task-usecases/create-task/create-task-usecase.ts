@@ -1,11 +1,11 @@
-import { TaskGateway } from "../../../gateways";
 import { CreateTaskRequestDto, CreateTaskResponseDto } from "./create-task-dtos";
+import { TaskRepository } from "../../../repositories";
 import { Task } from "../../../entities"
 
 export class CreateTaskUseCase {
-  private TaskGate: TaskGateway
+  private TaskGate: TaskRepository
   
-  constructor(taskGate: TaskGateway) {
+  constructor(taskGate: TaskRepository) {
     this.TaskGate = taskGate
   }
 

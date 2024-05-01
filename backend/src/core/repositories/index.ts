@@ -1,2 +1,2 @@
-export * from './mongoose-user-repository'
-export * from './mongoose-task-repository'
+export * from './user'
+export * from './task'

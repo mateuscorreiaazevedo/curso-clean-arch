@@ -1,6 +1,6 @@
 import { User } from '@/core/domain/entities'
-import { LocalStorageCacheService } from '@/core/infra/cache/local-storage-cache-service'
 import { useAuthAdapter } from '@/hooks/use-auth-adapter'
+import { useTokenLocalStorage } from '@/hooks/use-token-local-storage'
 import { createContext, PropsWithChildren, useEffect, useState } from 'react'
 
 interface AuthenticatedProps {
@@ -12,14 +12,13 @@ interface AuthenticatedProps {
 
 export const AuthenticationContext = createContext<AuthenticatedProps | null>(null)
 
-const cacheService = new LocalStorageCacheService()
-
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [authenticated, setAuthenticated] = useState<boolean>(false)
   const [user, setUser] = useState<Omit<User, 'password'> | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const { getMeUserUseCase } = useAuthAdapter()
-  const token = cacheService.get<string | null>('token')
+  const cacheStorage = useTokenLocalStorage()
+  const token = cacheStorage.get()
 
   async function getCurrentUser() {
     try {

@@ -1,10 +1,10 @@
-import { TaskGateway } from "../../../gateways";
 import { ToogleTaskRequestDto } from "./toggle-task-dtos";
+import { TaskRepository } from "../../../repositories";
 
 export class ToggleTaskUseCase {
-  private TaskGate: TaskGateway
+  private TaskGate: TaskRepository
   
-  constructor(taskGate: TaskGateway) {
+  constructor(taskGate: TaskRepository) {
     this.TaskGate = taskGate
   }
 

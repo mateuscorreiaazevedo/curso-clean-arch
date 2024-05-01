@@ -1,11 +1,12 @@
 import { AxiosHttpService } from '../../http/axios-http-service'
-import { Task, HttpResponse } from '../../../domain/entities'
-import { TaskGateway } from '../../../domain/gateways'
-import { LocalStorageCacheService } from '../../cache/local-storage-cache-service'
+import { LocalStorageCacheService } from '../../cache'
+import { TaskRepository } from './task-repository'
+import { Task } from '../../../domain/entities'
+import { HttpResponse } from '../../http'
 
 const cacheStorage = new LocalStorageCacheService()
 
-export class HttpTaskRepository extends AxiosHttpService implements TaskGateway {
+export class HttpTaskRepository extends AxiosHttpService implements TaskRepository {
   private token = cacheStorage.get('token')
 
   async create(task: Task): Promise<HttpResponse<Task>> {

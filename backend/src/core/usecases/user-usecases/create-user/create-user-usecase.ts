@@ -1,11 +1,11 @@
 import { User } from "../../../entities";
+import { UserRepository } from "../../../repositories";
 import { CreateUserRequestDTO, CreateUserResponseDTO } from "./create-user-dto";
-import { UserGateway } from "../../../gateways";
 
 export class CreateUserUseCase {
-  private UserGate: UserGateway
+  private UserGate: UserRepository
 
-  constructor (userGate: UserGateway) {
+  constructor (userGate: UserRepository) {
     this.UserGate = userGate
   }
 

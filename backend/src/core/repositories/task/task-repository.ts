@@ -1,6 +1,6 @@
-import { Task } from "../entities";
+import { Task } from "../../entities"
 
-export interface TaskGateway {
+export interface TaskRepository {
   create(task: Task): Promise<Task>
   list(userId: string): Promise<Task[]>
   findById(id: string): Promise<Task>

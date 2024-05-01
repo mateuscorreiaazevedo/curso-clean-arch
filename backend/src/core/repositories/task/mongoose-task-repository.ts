@@ -1,8 +1,8 @@
-import { Task } from "../entities";
-import { TaskGateway } from "../gateways";
-import { TaskModel } from "./models/task-model";
+import { Task } from "../../entities";
+import { TaskModel } from "../models/task-model";
+import { TaskRepository } from "./task-repository";
 
-export class MongooseTaskRepository implements TaskGateway {
+export class MongooseTaskRepository implements TaskRepository {
   async create(task: Task): Promise<Task> {
     const { description, done, userId } = task
 

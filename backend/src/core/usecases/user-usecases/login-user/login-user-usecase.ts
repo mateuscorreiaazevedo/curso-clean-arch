@@ -1,26 +1,30 @@
-import { User } from "../../../entities";
-import { UserGateway } from "../../../gateways";
+import { UserRepository } from "../../../repositories";
 import { LoginUserReponseDTO, LoginUserRequestDTO } from "./login-user-dtos";
 
 export class LoginUserUseCase {
-  private userGateway: UserGateway
+  private userGateway: UserRepository
 
-  constructor(userGate: UserGateway) {
+  constructor(userGate: UserRepository) {
     this.userGateway = userGate
   }
 
   async execute(loginUserDto: LoginUserRequestDTO): Promise<LoginUserReponseDTO> {
     const { email, password } = loginUserDto
-    const user = new User(email, password)
     
-    const { token } = await this.userGateway.login(user)
+    const user = await this.userGateway.findByEmail(email)
+    
+    if(!user) {
+      throw new Error('Invalid email')
+    }
+    
+    const userLogged = await this.userGateway.login(user, password)
 
-    if(!token) {
-      throw new Error("Invalid credentials");
+    if(!userLogged) {
+      throw new Error("Invalid password");
     }
 
     return {
-      token
+      token: userLogged.token
     }
   }
 }
