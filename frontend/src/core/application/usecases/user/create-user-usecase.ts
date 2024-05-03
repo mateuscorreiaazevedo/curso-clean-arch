@@ -1,6 +1,5 @@
 import { UserRepository } from '@/core/infra/repositories/user/user-repository'
 import { CreateUserRequestDTO, CreateUserResponseDTO } from '../../dtos/user'
-import { httpClientResponseHandler } from '../../utils'
 import { BadRequestError } from '@/core/domain/errors'
 import { User } from '@/core/domain/entities'
 
@@ -22,10 +21,8 @@ export class CreateUserUseCase {
 
     const response = await this.userGateway.create(user)
 
-    const createdUser = httpClientResponseHandler(response)
-
     return {
-      id: createdUser?.id ?? '',
+      id: response?.id ?? '',
       name,
       email,
     }

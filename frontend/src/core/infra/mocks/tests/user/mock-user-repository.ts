@@ -1,6 +1,6 @@
 import { UserRepository } from '@/core/infra/repositories/user/user-repository'
 import { Authentication, User } from '@/core/domain/entities'
-import { HttpResponse } from '@/core/infra/http'
+import { BadRequestError } from '@/core/domain/errors'
 
 const userLogged: User = {
   email: 'any_email@email.com',
@@ -10,40 +10,29 @@ const userLogged: User = {
 }
 
 export class MockUserRepository implements UserRepository {
-  async create(user: User): Promise<HttpResponse<User>> {
+  async create(user: User): Promise<User> {
     await new Promise(resolve => setTimeout(resolve, 200))
 
-    return {
-      statusCode: 200,
-      body: user,
-    }
+    return user
   }
 
-  async login(user: User): Promise<HttpResponse<Authentication>> {
+  async login(user: User): Promise<Authentication> {
     await new Promise(resolve => setTimeout(resolve, 200))
 
     if (user.email !== userLogged.email || user.password !== userLogged.password) {
-      return {
-        statusCode: 400,
-      }
+      throw new BadRequestError()
     }
 
     return {
-      statusCode: 200,
-      body: {
-        token: 'any_token',
-      },
+      token: 'any_token',
     }
   }
 
   signOut(): void {}
 
-  async getMe(): Promise<HttpResponse<User>> {
+  async getMe(): Promise<User> {
     await new Promise(resolve => setTimeout(resolve, 200))
 
-    return {
-      statusCode: 200,
-      body: userLogged,
-    }
+    return userLogged
   }
 }

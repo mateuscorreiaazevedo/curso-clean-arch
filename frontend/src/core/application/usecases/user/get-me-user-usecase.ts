@@ -1,5 +1,4 @@
 import { UserRepository } from '@/core/infra/repositories/user/user-repository'
-import { httpClientResponseHandler } from '../../utils'
 import { GetMeUserResponseDTO } from '../../dtos/user'
 
 export class GetMeUserUseCase {
@@ -12,12 +11,10 @@ export class GetMeUserUseCase {
   async execute(): Promise<GetMeUserResponseDTO> {
     const me = await this.userGateway.getMe()
 
-    const response = httpClientResponseHandler(me)
-
     return {
-      id: response?.id ?? '',
-      email: response.email ?? '',
-      name: response?.name ?? '',
+      id: me?.id ?? '',
+      email: me.email ?? '',
+      name: me?.name ?? '',
     }
   }
 }

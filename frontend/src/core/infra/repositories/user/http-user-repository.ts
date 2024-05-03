@@ -2,12 +2,12 @@ import { AxiosHttpService } from '../../http/axios-http-service'
 import { User, Authentication } from '@/core/domain/entities'
 import { LocalStorageCacheService } from '../../cache'
 import { UserRepository } from './user-repository'
-import { HttpResponse } from '../../http'
+import { httpClientResponseHandler } from '@/core/application/utils'
 
 const cacheSevice = new LocalStorageCacheService()
 
 export class HttpUserRepository extends AxiosHttpService implements UserRepository {
-  async create(user: User): Promise<HttpResponse<User>> {
+  async create(user: User): Promise<User> {
     const { email, name, password } = user
 
     const response = await this.request<User>({
@@ -20,10 +20,12 @@ export class HttpUserRepository extends AxiosHttpService implements UserReposito
       },
     })
 
-    return response
+    const createdUser = httpClientResponseHandler(response)
+
+    return createdUser
   }
 
-  async login(user: User): Promise<HttpResponse<Authentication>> {
+  async login(user: User): Promise<Authentication> {
     const { email, password } = user
 
     const response = await this.request<Authentication>({
@@ -35,10 +37,12 @@ export class HttpUserRepository extends AxiosHttpService implements UserReposito
       },
     })
 
-    return response
+    const authentication = httpClientResponseHandler(response)
+
+    return authentication
   }
 
-  async getMe(): Promise<HttpResponse<User>> {
+  async getMe(): Promise<User> {
     const token = cacheSevice.get('token')
 
     const response = await this.request<User>({
@@ -49,7 +53,9 @@ export class HttpUserRepository extends AxiosHttpService implements UserReposito
       },
     })
 
-    return response
+    const loggedCurrentUser = httpClientResponseHandler(response)
+
+    return loggedCurrentUser
   }
 
   signOut(): void {

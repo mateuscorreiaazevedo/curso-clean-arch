@@ -1,6 +1,5 @@
 import { UserRepository } from '@/core/infra/repositories/user/user-repository'
 import { LoginUserRequestDTO, LoginUserResponseDTO } from '../../dtos/user'
-import { httpClientResponseHandler } from '../../utils'
 import { User } from '@/core/domain/entities'
 
 export class LoginUserUseCase {
@@ -16,10 +15,8 @@ export class LoginUserUseCase {
 
     const response = await this.userGateway.login(user)
 
-    const loginResponse = httpClientResponseHandler(response)
-
     return {
-      token: loginResponse.token,
+      token: response.token,
     }
   }
 }
