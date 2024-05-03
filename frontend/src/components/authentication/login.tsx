@@ -1,8 +1,8 @@
 import { useCustomForm } from '@/hooks/use-custom-form'
 import { Form } from '../commons/form'
 import * as y from 'yup'
-import { useAuthAdapter } from '@/hooks/use-auth-adapter'
 import { useTokenLocalStorage } from '@/hooks/use-token-local-storage'
+import { LoginPageUseCase } from '@/@types'
 
 const loginSchema = y.object({
   email: y
@@ -17,8 +17,7 @@ const loginSchema = y.object({
 
 type Schema = y.InferType<typeof loginSchema>
 
-export function LoginForm() {
-  const { loginUserUseCase } = useAuthAdapter()
+export function LoginForm({ loginUserUseCase }: LoginPageUseCase) {
   const cacheStorage = useTokenLocalStorage()
 
   const form = useCustomForm<Schema>({

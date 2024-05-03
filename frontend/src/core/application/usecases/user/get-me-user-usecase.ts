@@ -1,4 +1,4 @@
-import { UserRepository } from '@/core/infra/repositories'
+import { UserRepository } from '@/core/infra/repositories/user/user-repository'
 import { httpClientResponseHandler } from '../../utils'
 import { GetMeUserResponseDTO } from '../../dtos/user'
 

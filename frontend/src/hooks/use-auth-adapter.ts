@@ -4,7 +4,7 @@ import {
   LoginUserUseCase,
   SignOutUserUseCase,
 } from '@/core/application/usecases/user'
-import { HttpUserRepository } from '@/core/infra/repositories'
+import { HttpUserRepository } from '@/core/infra/repositories/user'
 import { create } from 'zustand'
 
 export interface AuthenticationAdapters {

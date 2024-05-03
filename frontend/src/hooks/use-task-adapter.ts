@@ -4,11 +4,10 @@ import {
   RemoveTaskUseCase,
   ToggleTaskUseCase,
 } from '@/core/application/usecases/task'
-import { HttpTaskRepository } from '@/core/infra/repositories'
-import { TaskGateway } from '@/core/domain/gateways'
+import { HttpTaskRepository, TaskRepository } from '@/core/infra/repositories/task'
 import { create } from 'zustand'
 
-const taskRepository: TaskGateway = new HttpTaskRepository()
+const taskRepository: TaskRepository = new HttpTaskRepository()
 
 const createTaskUseCase = new CreateTaskUseCase(taskRepository)
 const listTaskUseCase = new ListTaskUseCase(taskRepository)

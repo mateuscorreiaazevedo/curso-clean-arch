@@ -1,4 +1,4 @@
-import { TaskRepository } from '@/core/infra/repositories'
+import { TaskRepository } from '@/core/infra/repositories/task'
 import { httpClientResponseHandler } from '../../utils'
 import { ListTaskResponseDTO } from '../../dtos/task'
 import { Task } from '@/core/domain/entities'

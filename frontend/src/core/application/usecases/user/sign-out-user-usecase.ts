@@ -1,4 +1,4 @@
-import { UserRepository } from '@/core/infra/repositories'
+import { UserRepository } from '@/core/infra/repositories/user/user-repository'
 
 export class SignOutUserUseCase {
   private userGateway: UserRepository

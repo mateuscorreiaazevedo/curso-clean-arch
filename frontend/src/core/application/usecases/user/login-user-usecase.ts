@@ -1,6 +1,6 @@
-import { UserRepository } from '@/core/infra/repositories'
-import { httpClientResponseHandler } from '../../utils'
+import { UserRepository } from '@/core/infra/repositories/user/user-repository'
 import { LoginUserRequestDTO, LoginUserResponseDTO } from '../../dtos/user'
+import { httpClientResponseHandler } from '../../utils'
 import { User } from '@/core/domain/entities'
 
 export class LoginUserUseCase {

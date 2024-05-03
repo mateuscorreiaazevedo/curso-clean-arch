@@ -1,5 +1,5 @@
+import { UserRepository } from '@/core/infra/repositories/user/user-repository'
 import { CreateUserRequestDTO, CreateUserResponseDTO } from '../../dtos/user'
-import { UserRepository } from '@/core/infra/repositories'
 import { httpClientResponseHandler } from '../../utils'
 import { BadRequestError } from '@/core/domain/errors'
 import { User } from '@/core/domain/entities'
