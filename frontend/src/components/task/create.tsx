@@ -1,12 +1,20 @@
-import { useTaskAdapter } from '@/hooks/use-task-adapter'
-import { FormEvent, useRef } from 'react'
-import { Check } from 'lucide-react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Task } from '@/core/domain/entities'
+import { taskAdapter } from '@/utils/task-adapter'
+import { Form } from '../commons/form'
+import * as y from 'yup'
+import { useCustomForm } from '@/hooks/use-custom-form'
+import { Check } from 'lucide-react'
+
+const formSchema = y.object({ description: y.string().required('Campo obrigatório') })
+
+type Schema = y.InferType<typeof formSchema>
 
 export function CreateTask() {
-  const inputRef = useRef<HTMLInputElement>(null)
-  const { createTaskUseCase } = useTaskAdapter()
+  const form = useCustomForm<Schema>({
+    schema: formSchema,
+  })
+  const { createTaskUseCase } = taskAdapter
   const queryClient = useQueryClient()
 
   const { mutateAsync: createNewTaskFn } = useMutation({
@@ -19,31 +27,28 @@ export function CreateTask() {
     },
   })
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
+  const onSubmit = async (data: Schema) => {
     try {
-      if (!inputRef.current) return
-      const description = inputRef.current.value
-      await createNewTaskFn(description)
+      await createNewTaskFn(data.description)
 
-      inputRef.current.value = ''
-      inputRef.current.focus()
+      form.reset()
+      form.setFocus('description')
     } catch (error) {
-      throw new Error(error as any)
+      const { message } = error as Error
+
+      form.setError('description', { message })
     }
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex gap-x-2">
-      <input
-        ref={inputRef}
-        type="text"
-        className="bg-zinc-700 pl-4 flex-1 outline-none focus-visible:bg-zinc-800"
-      />
+    <Form {...form} onSubmit={onSubmit} className="flex gap-x-2">
+      <Form.Input name="description" placeholder="Descrição">
+        <Form.Input.ErrorLabel />
+        <Form.Input.Field />
+      </Form.Input>
       <button type="submit" className="bg-teal-400 px-4 hover:bg-teal-500 text-black">
         <Check />
       </button>
-    </form>
+    </Form>
   )
 }

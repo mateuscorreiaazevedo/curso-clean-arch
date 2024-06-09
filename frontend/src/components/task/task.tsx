@@ -1,11 +1,11 @@
-import { useTaskAdapter } from '@/hooks/use-task-adapter'
 import { Task } from '@/core/domain/entities'
 import { DeleteTask } from './delete'
 import { Check } from 'lucide-react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { taskAdapter } from '@/utils/task-adapter'
 
 export function TaskItem(props: Task) {
-  const { toggleTaskUseCase } = useTaskAdapter()
+  const { toggleTaskUseCase } = taskAdapter
   const { description, done, id } = props
   const queryClient = useQueryClient()
 

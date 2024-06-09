@@ -5,7 +5,6 @@ import {
   ToggleTaskUseCase,
 } from '@/core/application/usecases/task'
 import { HttpTaskRepository, TaskRepository } from '@/core/infra/repositories/task'
-import { create } from 'zustand'
 
 const taskRepository: TaskRepository = new HttpTaskRepository()
 
@@ -21,9 +20,9 @@ export interface TaskAdapter {
   removeTaskUseCase: RemoveTaskUseCase
 }
 
-export const useTaskAdapter = create<TaskAdapter>(() => ({
+export const taskAdapter: TaskAdapter = {
   createTaskUseCase,
   listTaskUseCase,
   removeTaskUseCase,
   toggleTaskUseCase,
-}))
+}

@@ -1,11 +1,10 @@
 import {
   CreateUserUseCase,
-  GetMeUserUseCase,
   LoginUserUseCase,
+  GetMeUserUseCase,
   SignOutUserUseCase,
 } from '@/core/application/usecases/user'
 import { HttpUserRepository } from '@/core/infra/repositories/user'
-import { create } from 'zustand'
 
 export interface AuthenticationAdapters {
   createUserUseCase: CreateUserUseCase
@@ -21,9 +20,9 @@ const loginUserUseCase = new LoginUserUseCase(userRepository)
 const getMeUserUseCase = new GetMeUserUseCase(userRepository)
 const signOutUserUseCase = new SignOutUserUseCase(userRepository)
 
-export const useAuthAdapter = create<AuthenticationAdapters>(() => ({
+export const authAdapter: AuthenticationAdapters = {
   createUserUseCase,
   getMeUserUseCase,
   loginUserUseCase,
   signOutUserUseCase,
-}))
+}

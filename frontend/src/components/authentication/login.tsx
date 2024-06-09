@@ -3,6 +3,7 @@ import { Form } from '../commons/form'
 import * as y from 'yup'
 import { useTokenLocalStorage } from '@/hooks/use-token-local-storage'
 import { LoginPageUseCase } from '@/@types'
+import { errorMessages } from '@/utils/error-messages'
 
 const loginSchema = y.object({
   email: y
@@ -31,7 +32,10 @@ export function LoginForm({ loginUserUseCase }: LoginPageUseCase) {
       window.location.reload()
     } catch (error) {
       const { message } = error as Error
-      form.setError('root', { message })
+
+      const errorMessage = errorMessages[message]
+
+      form.setError('root', { message: errorMessage })
     }
   }
 

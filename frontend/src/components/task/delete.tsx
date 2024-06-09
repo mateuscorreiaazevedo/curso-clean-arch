@@ -1,5 +1,5 @@
 import { Task } from '@/core/domain/entities'
-import { useTaskAdapter } from '@/hooks/use-task-adapter'
+import { taskAdapter } from '@/utils/task-adapter'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { XCircle } from 'lucide-react'
 
@@ -8,7 +8,7 @@ type Props = {
 }
 
 export function DeleteTask({ id }: Props) {
-  const { removeTaskUseCase } = useTaskAdapter()
+  const { removeTaskUseCase } = taskAdapter
   const queryClient = useQueryClient()
 
   const { mutateAsync: deleteTask } = useMutation({

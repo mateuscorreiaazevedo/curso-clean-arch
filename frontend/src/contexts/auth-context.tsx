@@ -1,6 +1,6 @@
 import { GetMeUserResponseDTO } from '@/core/application/dtos/user'
-import { LocalStorageCacheService } from '@/core/infra/cache'
-import { useAuthAdapter } from '@/hooks/use-auth-adapter'
+import { useTokenLocalStorage } from '@/hooks/use-token-local-storage'
+import { authAdapter } from '@/utils/auth-adapter'
 import { useQuery } from '@tanstack/react-query'
 import { createContext, PropsWithChildren, useState } from 'react'
 
@@ -12,12 +12,10 @@ interface AuthenticatedProps {
 
 export const AuthenticationContext = createContext<AuthenticatedProps | null>(null)
 
-const localStorageService = new LocalStorageCacheService()
-
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [authenticated, setAuthenticated] = useState<boolean>(false)
-  const token = localStorageService.get('token')
-  const { getMeUserUseCase } = useAuthAdapter()
+  const token = useTokenLocalStorage().get()
+  const { getMeUserUseCase } = authAdapter
 
   async function getCurrentUser() {
     if (token) {

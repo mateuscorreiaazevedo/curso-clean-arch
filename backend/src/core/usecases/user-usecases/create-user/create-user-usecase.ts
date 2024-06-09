@@ -14,13 +14,13 @@ export class CreateUserUseCase {
     const user = new User(email, password, name)
 
     if(confirmPassword !== password) {
-      throw new Error(`Password is not equals. ${confirmPassword} !== ${password}`);
+      throw new Error('PASSWORDS_DO_NOT_MATCH')
     }
 
     const verifyUserExists = await this.UserGate.findByEmail(email)
 
     if(verifyUserExists) {
-      throw new Error("User already registered");
+      throw new Error("USER_ALREADY_EXISTS")
     }
     
     const response = await this.UserGate.create(user)

@@ -14,13 +14,13 @@ export class LoginUserUseCase {
     const user = await this.userGateway.findByEmail(email)
     
     if(!user) {
-      throw new Error('Invalid email')
+      throw new Error('INVALID_USER_EMAIL');
     }
     
     const userLogged = await this.userGateway.login(user, password)
 
     if(!userLogged) {
-      throw new Error("Invalid password");
+      throw new Error("INVALID_USER_PASSWORD");
     }
 
     return {
