@@ -1,47 +1,46 @@
-import { User } from '@/core/domain/entities'
+import { GetMeUserResponseDTO } from '@/core/application/dtos/user'
+import { LocalStorageCacheService } from '@/core/infra/cache'
 import { useAuthAdapter } from '@/hooks/use-auth-adapter'
-import { useTokenLocalStorage } from '@/hooks/use-token-local-storage'
-import { createContext, PropsWithChildren, useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { createContext, PropsWithChildren, useState } from 'react'
 
 interface AuthenticatedProps {
-  user: Omit<User, 'password'> | null
+  user?: GetMeUserResponseDTO | null
   authenticated: boolean
-  loading: boolean
-  setLoading: (value: boolean) => void
+  isLoading: boolean
 }
 
 export const AuthenticationContext = createContext<AuthenticatedProps | null>(null)
 
+const localStorageService = new LocalStorageCacheService()
+
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [authenticated, setAuthenticated] = useState<boolean>(false)
-  const [user, setUser] = useState<Omit<User, 'password'> | null>(null)
-  const [loading, setLoading] = useState<boolean>(true)
+  const token = localStorageService.get('token')
   const { getMeUserUseCase } = useAuthAdapter()
-  const cacheStorage = useTokenLocalStorage()
-  const token = cacheStorage.get()
 
   async function getCurrentUser() {
-    try {
-      const response = await getMeUserUseCase.execute()
-
-      setUser(response)
-      setAuthenticated(true)
-    } catch (error) {
-      setAuthenticated(false)
+    if (token) {
+      try {
+        const response = await getMeUserUseCase.execute()
+        setAuthenticated(true)
+        return response
+      } catch (error) {
+        setAuthenticated(false)
+        return null
+      }
     }
+
+    return null
   }
 
-  useEffect(() => {
-    if (token) {
-      getCurrentUser()
-    }
-    setLoading(false)
-  }, [loading])
+  const { data: user, isLoading } = useQuery({
+    queryKey: ['me'],
+    queryFn: getCurrentUser,
+  })
 
   return (
-    <AuthenticationContext.Provider
-      value={{ authenticated, user, loading, setLoading }}
-    >
+    <AuthenticationContext.Provider value={{ authenticated, user, isLoading }}>
       {children}
     </AuthenticationContext.Provider>
   )

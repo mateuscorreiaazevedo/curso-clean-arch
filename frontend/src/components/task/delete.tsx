@@ -1,5 +1,6 @@
+import { Task } from '@/core/domain/entities'
 import { useTaskAdapter } from '@/hooks/use-task-adapter'
-import { useUpdatedList } from '@/hooks/use-updated-list'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { XCircle } from 'lucide-react'
 
 type Props = {
@@ -8,15 +9,19 @@ type Props = {
 
 export function DeleteTask({ id }: Props) {
   const { removeTaskUseCase } = useTaskAdapter()
-  const { setUpdatedList } = useUpdatedList()
+  const queryClient = useQueryClient()
 
-  async function deleteTask() {
-    await removeTaskUseCase.execute({ id })
-    setUpdatedList(true)
-  }
+  const { mutateAsync: deleteTask } = useMutation({
+    mutationFn: () => removeTaskUseCase.execute({ id }),
+    onSuccess: () => {
+      const cached = queryClient.getQueryData(['tasks']) as Task[]
+
+      queryClient.setQueryData(['tasks'], () => cached.filter(task => task.id !== id))
+    },
+  })
 
   return (
-    <button onClick={deleteTask}>
+    <button onClick={() => deleteTask()}>
       <XCircle className="size-4 text-red-600 hover:text-red-500" />
     </button>
   )

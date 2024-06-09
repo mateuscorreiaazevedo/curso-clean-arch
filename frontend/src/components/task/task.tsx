@@ -1,18 +1,30 @@
 import { useTaskAdapter } from '@/hooks/use-task-adapter'
-import { useUpdatedList } from '@/hooks/use-updated-list'
 import { Task } from '@/core/domain/entities'
 import { DeleteTask } from './delete'
 import { Check } from 'lucide-react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 export function TaskItem(props: Task) {
-  const { setUpdatedList } = useUpdatedList()
   const { toggleTaskUseCase } = useTaskAdapter()
   const { description, done, id } = props
+  const queryClient = useQueryClient()
 
-  const toggleTask = async () => {
-    await toggleTaskUseCase.execute({ id: id ?? '' })
-    setUpdatedList(true)
-  }
+  const { mutateAsync: toggleTask } = useMutation({
+    mutationFn: () => toggleTaskUseCase.execute({ id: id ?? '' }),
+    onSuccess: () => {
+      const cached = queryClient.getQueryData(['tasks']) as Task[]
+
+      queryClient.setQueryData(['tasks'], () => {
+        const listMapped = cached.map(task => {
+          if (task.id === id) {
+            return { ...task, done: !task.done }
+          }
+          return task
+        })
+        return listMapped
+      })
+    },
+  })
 
   return (
     <div className="flex flex-row items-center gap-x-2">
@@ -20,7 +32,7 @@ export function TaskItem(props: Task) {
         type="checkbox"
         id={id}
         checked={done}
-        onChange={toggleTask}
+        onChange={() => toggleTask()}
         className="sr-only"
       />
       <label

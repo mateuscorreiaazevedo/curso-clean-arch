@@ -1,13 +1,19 @@
 import { useAuthAdapter } from '@/hooks/use-auth-adapter'
 import { useAuthentication } from '@/hooks/use-authentication'
+import { useQueryClient } from '@tanstack/react-query'
 import { DoorOpen } from 'lucide-react'
 
 export function Header() {
   const { signOutUserUseCase } = useAuthAdapter()
   const { user } = useAuthentication()
+  const queryClient = useQueryClient()
 
   function handleSignOut() {
     signOutUserUseCase.execute()
+    queryClient.removeQueries({
+      queryKey: ['me'],
+    })
+
     window.location.reload()
   }
 

@@ -1,9 +1,12 @@
 import { Authentication, User } from '@/core/domain/entities'
-import { HttpResponse } from '../../http'
+
+export type CreateUser = User & {
+  confirmPassword: string
+}
 
 export interface UserRepository {
-  create(user: User): Promise<HttpResponse<User>>
-  login(user: User): Promise<HttpResponse<Authentication>>
-  getMe(): Promise<HttpResponse<User>>
+  create(user: CreateUser): Promise<User>
+  login(user: User): Promise<Authentication>
+  getMe(): Promise<User>
   signOut(): void
 }

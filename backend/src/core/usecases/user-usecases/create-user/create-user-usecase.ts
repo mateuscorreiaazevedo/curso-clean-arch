@@ -13,8 +13,8 @@ export class CreateUserUseCase {
     const { confirmPassword, email, name, password } = createUserDto
     const user = new User(email, password, name)
 
-    if(password !== confirmPassword) {
-      throw new Error("Password is not equals.");
+    if(confirmPassword !== password) {
+      throw new Error(`Password is not equals. ${confirmPassword} !== ${password}`);
     }
 
     const verifyUserExists = await this.UserGate.findByEmail(email)

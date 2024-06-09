@@ -19,7 +19,7 @@ export class CreateUserUseCase {
       throw new BadRequestError()
     }
 
-    const response = await this.userGateway.create(user)
+    const response = await this.userGateway.create({ ...user, confirmPassword })
 
     return {
       id: response?.id ?? '',

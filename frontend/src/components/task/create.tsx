@@ -1,22 +1,37 @@
 import { useTaskAdapter } from '@/hooks/use-task-adapter'
-import { useUpdatedList } from '@/hooks/use-updated-list'
 import { FormEvent, useRef } from 'react'
 import { Check } from 'lucide-react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Task } from '@/core/domain/entities'
 
 export function CreateTask() {
   const inputRef = useRef<HTMLInputElement>(null)
   const { createTaskUseCase } = useTaskAdapter()
-  const { setUpdatedList } = useUpdatedList()
+  const queryClient = useQueryClient()
+
+  const { mutateAsync: createNewTaskFn } = useMutation({
+    mutationFn: (description: string) =>
+      createTaskUseCase.execute({ description, done: false }),
+    onSuccess: newData => {
+      const cached = queryClient.getQueryData(['tasks']) as Task[]
+
+      queryClient.setQueryData(['tasks'], () => [...cached, newData])
+    },
+  })
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!inputRef.current) return
-    const description = inputRef.current.value
-    await createTaskUseCase.execute({ description, done: false })
 
-    inputRef.current.value = ''
-    inputRef.current.focus()
-    setUpdatedList(true)
+    try {
+      if (!inputRef.current) return
+      const description = inputRef.current.value
+      await createNewTaskFn(description)
+
+      inputRef.current.value = ''
+      inputRef.current.focus()
+    } catch (error) {
+      throw new Error(error as any)
+    }
   }
 
   return (

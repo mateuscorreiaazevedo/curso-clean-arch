@@ -3,12 +3,12 @@ import AuthenticatedRoutes from './authenticated/routes'
 import UnauthenticatedRoutes from './unauthenticated/routes'
 import { useAuthentication } from '@/hooks/use-authentication'
 
-export default function RouterApp() {
-  const { authenticated, loading } = useAuthentication()
+export function RouterApp() {
+  const { authenticated, isLoading } = useAuthentication()
 
   return (
     <Suspense fallback={<p>loading...</p>}>
-      {authenticated && !loading ? (
+      {authenticated && !isLoading ? (
         <AuthenticatedRoutes />
       ) : (
         <UnauthenticatedRoutes />
